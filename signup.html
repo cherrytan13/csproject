@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgb(43, 42, 42);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .signup-container {
+            background: rgb(112, 112, 169);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 480px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        
+        .signup-container h2 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .input-field {
+            width: 80%;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            border: 2px solid black;
+        }
+
+        .signup-button {
+            background: #007BFF;
+            color: white;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .login-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #1f1f1f;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<script type="module" src="register.js"></script>
+<body>
+    <div class="signup-container">
+        <h2>Create an Account</h2>
+        <input type="text" class="input-field" placeholder="Enter your name">
+        <input type="email" class="input-field" placeholder="Enter your email address" id="email">
+        <input type="password" class="input-field" placeholder="Create a password" id="password">
+        <br>
+        <a href="#" class="signup-button" id="submit">Sign Up</a>
+        <a href="login.html" class="login-link">Already have an account? Log in</a>
+    </div>
+</body>
+</html>

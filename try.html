@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MyTaskMate</title>
+    <link rel="icon" type="image/png" href="calendar.png">
+    <style>
+        #signupSidebar {
+            position: fixed; 
+            top: 0; 
+            width: 450px; 
+            height: 100%; 
+            background: lavender; 
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3); 
+            padding: 45px; 
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Animation effect for smooth sliding */
+        }
+
+        .hide-sidebar {
+            transform: translateX(100%); /* Move sidebar completely out */
+            opacity: 0;
+        }
+
+        /* Class to Make Sidebar Visible */
+        .show {
+            right: 0 !important; /* Moves sidebar into view !imp so it overrides everything ensures the sidebar appears no matter what*/
+        }
+
+        .getstarted-btn {
+            top:100px;
+            background: black; /* Red button color */ 
+            color: white; /* White text color */
+            border: 1px solid white; /* Removes border */
+            border-radius: 10px;
+            padding: 10px 30px; /* Adds spacing inside the button */
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        p {
+            font-family: 'Lora', sans-serif;
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+
+        .center {
+            display: block;
+            margin: auto;
+        }
+
+        .line {
+            width: 100%;
+            height: 3px;
+            background-color: black;
+            margin: 30px 0px;
+        }
+
+        #welcome {
+            background: #C3B1E1; 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); 
+            width: 480px; 
+            text-align: center; 
+            box-sizing: border-box; 
+            display: none;
+        }
+
+        #welcome h2 {
+            font-size: 28px; 
+            font-weight: 700; 
+        }
+
+
+        .input-field {
+            width: 80%; 
+            padding: 12px;
+            border-radius: 30px;
+            margin: 12px 0;
+            border: 2px solid black;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px; 
+        }
+
+        .get-started {
+            background: #007BFF; 
+            color: white; 
+            padding: 14px 24px; 
+            border: none; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            display: inline-block; 
+            margin-top: 14px;
+            text-decoration: none; 
+            font-size: 15px;
+            font-weight: bold; 
+        }
+        
+       
+        .signup-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; 
+            font-weight: bold;
+            background-color: rgb(43, 42, 42);
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            height: 100vh; 
+            margin: 0; 
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="signupSidebar">
+        <img src="calender2.png" alt="calendar" width="200px" height="200px" class="center">
+        <div class="line"></div>
+        <p>To enhance your productivity, MyTaskMate is built around a week calendar view without any hourly scheduling. 
+            We’d say it’s the best view to organize your life and work without stress.</p>
+            <br>
+            <br>
+        <!-- Close Button -->
+        <button class="getstarted-btn" onclick="handlebutton()">Get Started</button>
+        </div>
+
+        <div id="welcome">
+            <h1>Every task is an adventure!</h1>
+            <p>Your future self just sent a thank-you note✉️😌</p>
+            <input type="email" class="input-field" placeholder="Enter your email address"> 
+            <input type="password" class="input-field" placeholder="Enter your password"> 
+            <br>
+            <a href="https://example.com" class="get-started">Start Now →</a> 
+            <a href="signup.html" class="signup-link">New user? Sign up</a> 
+        </div>
+
+    <script>
+        // Function to Show Sidebar When Page Loads
+        window.onload = function() {
+            document.getElementById("signupSidebar").classList.add("show");
+        };
+
+        // Function to Close Sidebar When Close Button is Clicked 
+        function handlebutton() {  
+            let sidebar = document.getElementById("signupSidebar");
+            let welcomeBox = document.getElementById("welcome");
+
+            // Hide sidebar with animation
+            sidebar.classList.add("hide-sidebar");
+
+            // Wait for animation to complete, then show login box
+            setTimeout(() => {
+                sidebar.style.display = "none"; // Fully hide sidebar
+                welcomeBox.style.display = "block";
+            }, 500); // Matches CSS transition time
+        }
+    </script>
+
+</body>
+</html>
