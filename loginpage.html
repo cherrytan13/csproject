@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudSync - Login/Signup</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+    }
+    
+    @keyframes float2 {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(20px) rotate(-5deg);
+      }
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+      50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    body {
+      background: linear-gradient(135deg, #2563EB, #88948A, #2563EB);
+      background-size: 300% 300%;
+      animation: gradientAnimation 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content:space-evenly;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+    }
+    
+    .container {
+      background-color: rgba(25, 25, 40, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      width: 400px;
+      overflow: hidden;
+      position: relative;
+      animation: fadeIn 1s ease-out forwards;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+    
+    .header {
+      text-align: center;
+      padding: 30px 0 15px;
+      position: relative;
+    }
+    
+    .site-title {
+      font-size: 2.5rem;
+      color: #60a5fa;
+      margin-bottom: 10px;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .site-title::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      bottom: 0;
+      left: 50%;
+      background: linear-gradient(to right, #2563EB, #88948A);
+      transition: width 0.5s ease, left 0.5s ease;
+    }
+    
+    .container:hover .site-title::after {
+      width: 100%;
+      left: 0;
+    }
+    
+    .site-description {
+      color: #a4aea0;
+      font-size: 1rem;
+      opacity: 0;
+      animation: fadeIn 1s ease-out 0.3s forwards;
+    }
+    
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #444;
+      opacity: 0;
+      animation: fadeIn 1s ease-out 0.5s forwards;
+    }
+    
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 15px 0;
+      cursor: pointer;
+      font-weight: 600;
+      color: #60a5fa;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tab::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 0;
+      height: 100%;
+      background-color: rgba(37, 99, 235, 0.1);
+      transform: translateX(-50%);
+      transition: width 0.3s ease;
+      z-index: -1;
+    }
+    
+    .tab:hover::before {
+      width: 100%;
+    }
+    
+    .tab.active {
+      color: #93c5fd;
+      border-bottom: 3px solid #2563EB;
+    }
+    
+    .tab-content {
+      padding: 30px;
+      opacity: 0;
+      animation: fadeIn 1s ease-out 0.7s forwards;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    #login-form .form-group:nth-child(1) {
+      animation-delay: 0.8s;
+    }
+    
+    #login-form .form-group:nth-child(2) {
+      animation-delay: 1s;
+    }
+    
+    #signup-form .form-group:nth-child(1) {
+      animation-delay: 0.8s;
+    }
+    
+    #signup-form .form-group:nth-child(2) {
+      animation-delay: 0.9s;
+    }
+    
+    #signup-form .form-group:nth-child(3) {
+      animation-delay: 1s;
+    }
+    
+    #signup-form .form-group:nth-child(4) {
+      animation-delay: 1.1s;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #ccc;
+      font-weight: 500;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    
+    .form-group:focus-within label {
+      color: #93c5fd;
+      transform: translateY(-2px);
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #444;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      background-color: rgba(40, 40, 60, 0.8);
+      color: #fff;
+    }
+    
+    .form-group input:focus {
+      border-color: #2563EB;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(to right, #2563EB, #88948A);
+      background-size: 200% auto;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 1.2s forwards;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.6s ease;
+    }
+    
+    .submit-btn:hover {
+      background-position: right center;
+      transform: translateY(-3px);
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+    }
+    
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+    
+    .submit-btn:active {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .extra-links {
+      text-align: center;
+      margin-top: 20px;
+      color: #aaa;
+      font-size: 0.9rem;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 1.4s forwards;
+    }
+    
+    .extra-links a {
+      color: #60a5fa;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    
+    .extra-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      bottom: -1px;
+      left: 0;
+      background-color: #93c5fd;
+      transition: width 0.3s ease;
+    }
+    
+    .extra-links a:hover {
+      color: #93c5fd;
+    }
+    
+    .extra-links a:hover::after {
+      width: 100%;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .floating-shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+    
+    .shape {
+      position: absolute;
+      opacity: 0.2;
+      border-radius: 50%;
+    }
+    
+    .shape1 {
+      background-color: #2563EB;
+      width: 120px;
+      height: 120px;
+      top: -30px;
+      left: -30px;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .shape2 {
+      background-color: #88948A;
+      width: 80px;
+      height: 80px;
+      bottom: 50px;
+      right: -20px;
+      animation: float2 8s ease-in-out infinite;
+    }
+    
+    .shape3 {
+      background-color: rgba(96, 165, 250, 0.4);
+      width: 60px;
+      height: 60px;
+      bottom: -20px;
+      left: 40px;
+      animation: pulse 7s ease-in-out infinite;
+    }
+    
+    .shape4 {
+      background-color: rgba(136, 148, 138, 0.4);
+      width: 50px;
+      height: 50px;
+      top: 50px;
+      right: 30px;
+      animation: pulse 9s ease-in-out infinite 1s;
+    }
+    
+    ::placeholder {
+      color: #777;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus::placeholder {
+      opacity: 0.7;
+      transform: translateX(5px);
+    }
+
+
+    .typewriter-container {
+      background-color: transparent;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 500px;
+      padding: 40px;
+      
+    }
+
+    .typewriter {
+      font-weight: bold;
+      font-size: 80px;
+      color: white;
+      overflow: hidden;
+      border-right: 3px solid #333;
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: 2px;
+      display: inline-block;
+      animation: 
+        typing 2s steps(40, end),
+        erasing 1.5s steps(40, end) 3s forwards,
+        blink-caret 0.75s step-end infinite;
+   
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes erasing {
+      from { width: 100% }
+      to { width: 0 }
+    }
+
+    @keyframes typing-second {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #333 }
+    }
+
+    .content-container {
+      min-height: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .second-line {
+      display: none;
+      font-size: 40px;
+      color: white;
+      overflow: hidden;
+      border-right: 3px solid #333;
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: 2px;
+      animation: 
+        typing-second 2.5s steps(40, end),
+        blink-caret 0.75s step-end infinite;
+    }
+
+    /* Show second line after first is erased */
+    @keyframes showSecond {
+      from { display: none; }
+      to { display: inline-block; }
+    }
+  </style>
+</head>
+<body>
+  <div class="typewriter-container">
+    <div class="content-container">
+      <div class="typewriter">dating?
+        </div>
+    </div>
+  </div>
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="floating-shapes">
+      <div class="shape shape1"></div>
+      <div class="shape shape2"></div>
+      <div class="shape shape3"></div>
+      <div class="shape shape4"></div>
+    </div>
+    
+    <div class="header">
+      <h1 class="site-title">CloudSync</h1>
+      <p class="site-description">Seamless digital experiences</p>
+    </div>
+    
+    <div class="tabs">
+      <div class="tab active" id="login-tab" onclick="switchTab('login')">Login</div>
+      <div class="tab" id="signup-tab" onclick="switchTab('signup')">Sign Up</div>
+    </div>
+    
+    <div class="tab-content">
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="submit-btn"><a href="biopage.html">Login</button>
+        <div class="extra-links">
+          <a href="#">Forgot password?</a>
+        </div>
+      </form>
+      
+      <form id="signup-form" class="hidden">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email Address</label>
+          <input type="email" id="signup-email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="Create a password" required>
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+        </div>
+        <button type="submit" class="submit-btn">Create Account</button>
+        <div class="extra-links">
+          By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    // Wait for the first text to be typed and erased
+    setTimeout(() => {
+      const container = document.querySelector('.content-container');
+      container.innerHTML = '';
+      
+      const secondLine = document.createElement('div');
+      secondLine.className = 'second-line';
+      secondLine.textContent = 'But for dreams';
+      secondLine.style.display = 'inline-block';
+      
+      container.appendChild(secondLine);
+    }, 4500); // Wait for typing + erasing animations to complete
+  </script>
+  <!--<script>
+    function switchTab(tab) {
+      const loginTab = document.getElementById('login-tab');
+      const signupTab = document.getElementById('signup-tab');
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      
+      if (tab === 'login') {
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+      } else {
+        loginTab.classList.remove('active');
+        signupTab.classList.add('active');
+        loginForm.classList.add('hidden');
+        signupForm.classList.remove('hidden');
+      }
+      
+      // Reset animations for the newly visible form
+      const visibleForm = tab === 'login' ? loginForm : signupForm;
+      const formGroups = visibleForm.querySelectorAll('.form-group');
+      const submitBtn = visibleForm.querySelector('.submit-btn');
+      const extraLinks = visibleForm.querySelector('.extra-links');
+      
+      formGroups.forEach((group, index) => {
+        group.style.animation = 'none';
+        group.offsetHeight; // Trigger reflow
+        group.style.animation = `fadeIn 0.5s ease-out forwards ${0.8 + index * 0.1}s`;
+      });
+      
+      submitBtn.style.animation = 'none';
+      submitBtn.offsetHeight;
+      submitBtn.style.animation = `fadeIn 0.5s ease-out ${0.8 + formGroups.length * 0.1}s forwards`;
+      
+      extraLinks.style.animation = 'none';
+      extraLinks.offsetHeight;
+      extraLinks.style.animation = `fadeIn 0.5s ease-out ${1 + formGroups.length * 0.1}s forwards`;
+    }
+    
+    // Create animated background particles
+    function createParticles() {
+      const body = document.querySelector('body');
+      const particleCount = 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random properties
+        const size = Math.random() * 15 + 5;
+        const posX = Math.random() * window.innerWidth;
+        const posY = Math.random() * window.innerHeight;
+        const opacity = Math.random() * 0.2 + 0.1;
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+        
+        // Apply styles
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}px`;
+        particle.style.top = `${posY}px`;
+        particle.style.opacity = opacity;
+        particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+        
+        body.appendChild(particle);
+      }
+    }
+    
+    // Prevent form submission (for demo purposes)
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      animateButtonClick(e.target.querySelector('.submit-btn'));
+      setTimeout(() => {
+        alert('Login functionality would go here in a real application');
+      }, 300);
+    });
+    
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      animateButtonClick(e.target.querySelector('.submit-btn'));
+      setTimeout(() => {
+        alert('Signup functionality would go here in a real application');
+      }, 300);
+    });
+    
+    function animateButtonClick(button) {
+      button.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        button.style.transform = '';
+      }, 200);
+    }
+    
+    // Add input focus animations
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.classList.add('focus');
+      });
+      
+      input.addEventListener('blur', function() {
+        this.parentElement.classList.remove('focus');
+      });
+    });
+    
+    // Initialize particles
+    window.addEventListener('load', createParticles);
+  </script>
+  !-->
+</body>
+</html>
