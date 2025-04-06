@@ -1,0 +1,80 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: serif;
+    color: #333;
+}
+
+.date-input{
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1 px solid;
+    background: transparent;
+    border: none;
+
+}
+
+.datepicker-container{
+    position: relative;
+}
+
+.datepicker button{
+    cursor: pointer;
+    background: transparent;
+    border-radius: 3px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: 0.3s;
+
+}
+
+.datepicker{
+    position: absolute;
+    top: 100%;
+    z-index: 100;
+    margin-top: 2px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.days, .dates{
+    display: grid;
+    grid-template-columns: repeat(7, 32px);
+    gap: 10px;
+    margin-block: 10px;
+}
+
+.days span{
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.dates button{
+    color: slategrey
+    
+}
+
+.dates button:hover{
+    background: rgba(119, 136, 153, 0.1);
+}
+
+.dates button.today{
+    background: lightblue;
+}
+
+.dates button.selected{
+    background: lightskyblue;
+}
+
+.datepickerheader{
+    display: flex;
+}
+
+

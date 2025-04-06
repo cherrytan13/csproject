@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Four Divisions Side by Side</title>
+    <link rel="stylesheet" href="cssmain.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            
+            justify-content: center;
+            align-items:last baseline;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .todo-list {
+            margin-top: 10px;
+            list-style-type: none;
+            padding: 0;
+            gap: 10px;
+            
+        }
+
+        .todo-list button {
+        background: #ff4444;
+        color: white;
+        border: none;
+        padding: 7px 19px;
+        cursor: pointer;
+        margin-left: 100px;
+        text-align: center;
+}
+
+        .todo-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            gap: 20px;
+            padding-left: 20px;
+            justify-content: space-between;
+            
+        }
+        .todo-list li:last-child {
+            border-bottom: none;
+        }
+        .todo-list input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .todo-list label {
+            font-size: 29px;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+
+        ul li{
+            list-style: none;
+            
+            
+
+
+        }
+        ul li::before{
+            content: '';
+            position: absolute;
+            height: 15px;
+            width: 15px;
+            border-radius: 50%;
+            border: 2px solid black;
+            margin-left: 10px;
+            margin-right: 10px;
+            display: flex;
+            text-align: center;
+            
+        }
+    
+
+        ul li ::after{
+            text-decoration: line-through;
+        }
+
+        .top{
+            height: 33.33%;;
+            width: 100%;
+           justify-content: center;
+           background-image: url("image.png");
+           opacity: 0.6;
+           background-repeat: no-repeat;
+           background-size: 100% 100%;
+           
+        }
+
+        .container {
+            display: flex;
+            width: 100%; /* 2/3 of the webpage width */
+            height: 66.67%; /* Adjust height as needed */
+            justify-content: space-around;
+            box-sizing: border-box;
+           
+        }
+
+        .middle{
+            display: flex;
+            
+        }
+        
+        .division {
+            width: 20%;
+            flex: 1;
+            text-align: center;
+            margin: 30px;
+            margin-top: 90px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            
+            justify-content: space-around;
+            font-size: medium;
+            line-height: 25px;
+            color: #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+
+        }
+
+        .box{
+            height: 50px;
+            width: 99.5%;
+            border: 2px solid black;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            
+        }
+
+        .row{
+            margin-top: 0%;
+            display: flex;
+            margin-bottom: 20px;
+            font-size: 14px;
+            
+            border-radius: 20px;
+            padding: 10px;
+            
+        }
+
+        .middle{
+            display: flex;
+            margin-top: 50px;
+        }
+
+        #inputbox{
+            
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            font-weight: 200;
+            outline: none;
+            border-radius: 40px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: black;
+            
+            padding: 10px;
+            
+            
+        }
+
+        #button1{
+            padding: 10px 20px;
+            width: 70px;
+            font-size: 14px;
+            border-radius: 40px;
+            background-color: transparent;
+            outline: none;
+            border: none;
+            background-color: rgb(255, 180, 41);
+            cursor: pointer;
+        }
+
+        #textbox{
+            margin-right: 100px;
+            height: fit-content;
+        }
+
+    </style>
+</head>
+<body>                   
+    <div class="top">
+       <h1>MY TODO LIST</h1> 
+    </div>
+    <div class="middle">
+        MAIN GOAL OF THE DAY
+        <input type="text" id="textbox">
+        <div class="datepicker-container">
+            <input type="text" class="dateinput" placeholder="Select date">
+            <div class="datepicker">
+
+                <div class="datepickerheader">
+                    <button>Prev</button>
+                        <div>
+                            <select class="monthinput">
+                                <option>January</option>
+                                
+                                <option>February</option>
+                                <option>March</option>
+                                <option>April</option>
+                                <option>May</option>
+                                <option>June</option>
+                                <option>July</option>
+                                <option>September</option>
+                                <option>October</option>
+                                <option>November</option>
+                                <option>Decemebr</option>
+                            </select>
+                            <input type="text" class="yearinput" value="2025">
+                        </div>
+                    <button>Next</button>
+
+                </div>
+
+                <div class="days">
+                    <span>Sun</span>
+                    <span>Mon</span>
+                    <span>Tues</span>
+                    <span>Wed</span>
+                    <span>Thurs</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                </div>
+
+                <div class="dates">
+                    <button>1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>4</button>
+                    <button>5</button>
+                    <button>6</button>
+                    <button>7</button>
+                    <button>8</button>
+                    <button>9</button>
+                    <button>10</button>
+                    <button>11</button>
+                    <button>12</button>
+                    <button>13</button>
+                    <button>14</button>
+                    <button>15</button>
+                    <button>16</button>
+                    <button>17</button>
+                    <button>18</button>
+                    <button>19</button>
+                    <button>20</button>
+                    <button>21</button>
+                    <button>22</button>
+                    <button>23</button>
+                    <button>24</button>
+                    <button class="today">25</button>
+                    <button>26</button>
+                    <button>27</button>
+                    <button class="selected">28</button>
+                    <button>29</button>
+                    <button>30</button>
+                </div>
+
+                <div class="datepickerfooter">
+                    <button class="reset">
+                        Reset
+                    </button>
+                    <button class="apply">
+                        Apply
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+   
+    <div class="container">
+        
+        <div class="division">
+            <div class="box"></div>
+
+            <br>
+            Must do
+            
+            <div class="row">
+                    <input type="text" id="inputbox" placeholder="Add task for today">
+                    <button onclick="addTask()">ADD</button>
+                
+
+            </div>
+            <ul class="todo-list"></ul>
+                <!--<li class="checked"><label for="dogVet">Take the dog to the vet</label></li>
+                <li class="checked"><label for="presentation">Prepare a presentation</label></li>
+                <li class="checked"><label for="vitamins">Buy vitamins for dogs</label></li>
+                !-->
+            </ul>
+        </div>
+        <div class="division">
+            <div class="box"></div>
+
+            <br>
+            Should do
+
+            <div class="row">
+                <input type="text" id="inputbox2" placeholder="Add task for today">
+                <button onclick="addTask()">ADD</button>
+            
+
+        </div>
+        <ul class="todo-list"></ul>
+        &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            <!--<li class="checked"><label for="dogVet">Take the dog to the vet</label></li>
+            <li class="checked"><label for="presentation">Prepare a presentation</label></li>
+            <li class="checked"><label for="vitamins">Buy vitamins for dogs</label></li>
+            !-->
+        </ul>
+    
+            
+        </div>
+        <div class="division">
+            <div class="box"></div>
+
+            <br>
+            Can be done later
+
+            <div class="row">
+                <input type="text" id="inputbox" placeholder="Add task for today">
+                <button id="button1" onclick="addTask()">ADD</button>
+            
+
+        </div>
+        <ul class="todo-list"></ul>
+            <!--<li class="checked"><label for="dogVet">Take the dog to the vet</label></li>
+            <li class="checked"><label for="presentation">Prepare a presentation</label></li>
+            <li class="checked"><label for="vitamins">Buy vitamins for dogs</label></li>
+            !-->
+        </ul>
+    
+        </div>
+        <div class="division">
+            <div class="box"></div>
+
+            <br>
+            Could do
+
+            <div class="row">
+                <input type="text" id="inputbox" placeholder="Add task for today">
+                <button onclick="addTask()">ADD</button>
+            
+
+        </div>
+        <ul class="todo-list"></ul>
+            <!--<li class="checked"><label for="dogVet">Take the dog to the vet</label></li>
+            <li class="checked"><label for="presentation">Prepare a presentation</label></li>
+            <li class="checked"><label for="vitamins">Buy vitamins for dogs</label></li>
+            !-->
+        </ul>
+    </div>
+        </div>
+    </div>
+    
+
+    <script src="script.js"></script>
+    <script src="script2.js"></script>
+</body>
+</html>
