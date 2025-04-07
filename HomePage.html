@@ -317,6 +317,86 @@ body {
       text-decoration: none;
       display: block;
     }
+
+    /* Login form styles */
+    .login-container {
+      background: rgba(46, 61, 98, 0.6);
+      border-radius: 12px;
+      padding: 25px;
+      max-width: 400px;
+      margin: 30px auto;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      text-align: center;
+    }
+
+    .login-container h2 {
+      color: #fff;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 16px;
+      transition: all 0.3s;
+      box-sizing: border-box;
+    }
+
+    .login-container input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .login-container input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .login-container button {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #6b46c1 0%, #8a2be2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(107, 70, 193, 0.3);
+    }
+
+    .login-container button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(107, 70, 193, 0.4);
+    }
+
+    .login-container button:active {
+      transform: translateY(1px);
+    }
+
+    /* Debug styles */
+    .debug-box {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #00ff00;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 12px;
+      max-width: 300px;
+      max-height: 150px;
+      overflow: auto;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
@@ -346,44 +426,76 @@ body {
         <h1 id="welcomeMessage">Welcome User!</h1>
         <p>Click on <strong>Tasks</strong> to add tasks and get started!</p>
       </div>
+      
+      <!-- Simplified login form -->
+      <div class="login-container">
+        <h2>Login</h2>
+        <input type="text" id="usernameInput" placeholder="Enter your name" autocomplete="off">
+        <button onclick="login()">Login</button>
+      </div>
+      
+      <!-- Debug box - Remove in production -->
+      <div class="debug-box" id="debugBox" style="display: none;">Debug information will appear here</div>
     </main>
   </div>
 
   <script>
-    // Set a default username for testing (remove this in production)
-    if (!localStorage.getItem('username')) {
-      localStorage.setItem('username', 'User');
+    // Debug function
+    function debug(message) {
+      const debugBox = document.getElementById('debugBox');
+      const timestamp = new Date().toLocaleTimeString();
+      debugBox.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+      debugBox.scrollTop = debugBox.scrollHeight;
+      console.log(`[${timestamp}] ${message}`);
     }
     
-    // Function to get the username from localStorage
-    function getUsername() {
-      return localStorage.getItem('username') || 'User';
-    }
-
-    // Function to update the welcome message with the username
-    function updateWelcomeMessage() {
-      const username = getUsername();
-      const welcomeElement = document.getElementById('welcomeMessage');
-      if (welcomeElement) {
+    // Simple login function - direct approach
+    function login() {
+      const usernameInput = document.getElementById('usernameInput');
+      const username = usernameInput.value.trim();
+      
+      debug("Login button clicked");
+      debug(`Username entered: "${username}"`);
+      
+      if (username) {
+        // Set the username in localStorage
+        localStorage.setItem('username', username);
+        debug(`Saved username "${username}" to localStorage`);
+        
+        // Update welcome message
+        const welcomeElement = document.getElementById('welcomeMessage');
         welcomeElement.textContent = `Welcome ${username}!`;
-        console.log('Welcome message updated to:', `Welcome ${username}!`);
+        debug(`Updated welcome message to: "Welcome ${username}!"`);
+        
+        // Clear input
+        usernameInput.value = '';
       } else {
-        console.error('Welcome message element not found!');
+        debug("No username entered");
       }
     }
-
-    // Call the function when the page loads
+    
+    // Initialize when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOM fully loaded');
-      updateWelcomeMessage();
+      debug("DOM fully loaded");
+      
+      // Allow login with Enter key
+      document.getElementById('usernameInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          debug("Enter key pressed in username input");
+          login();
+        }
+      });
+      
+      // Check for stored username
+      const savedUsername = localStorage.getItem('username');
+      if (savedUsername) {
+        debug(`Found saved username: "${savedUsername}"`);
+        document.getElementById('welcomeMessage').textContent = `Welcome ${savedUsername}!`;
+        debug(`Set welcome message to: "Welcome ${savedUsername}!"`);
+      } else {
+        debug("No saved username found");
+      }
     });
-
-    // Example function to simulate login - you would call this after successful login
-    function simulateLogin(username) {
-      localStorage.setItem('username', username);
-      updateWelcomeMessage();
-      console.log('Login simulated for:', username);
-    }
   </script>
 </body>
 </html>
