@@ -6,67 +6,82 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f8ff;
+      background-color: #1e2b49;
       color: #2c3e50;
-      max-width: 1200px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 20px;
+      line-height: 1.6;
     }
     
     h1 {
-      color: #3498db;
+      color: white;
       text-align: center;
       margin-bottom: 30px;
       padding-bottom: 10px;
       border-bottom: 2px solid #add8e6;
+      font-size: 32px;
     }
     
     .task-card {
       background-color: white;
-      border: 1px solid #add8e6;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 5px rgba(173, 216, 230, 0.3);
-      transition: transform 0.2s, box-shadow 0.2s;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
     }
     
     .task-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 8px rgba(173, 216, 230, 0.5);
-    }
-    
-    .task-content {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 15px;
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     }
     
     .task-item {
-      flex: 1;
-      min-width: 250px;
-      background-color: #e6f7ff;
-      padding: 15px;
+      margin-bottom: 20px;
+      padding: 18px;
+      background-color: #f8fcff;
+      border-left: 4px solid #3498db;
       border-radius: 6px;
+    }
+    
+    .task-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
     }
     
     .task-title {
       color: #2980b9;
-      margin: 0 0 10px 0;
-      font-size: 18px;
-      border-bottom: 1px solid #add8e6;
-      padding-bottom: 5px;
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    .task-date {
+      color: #7f8c8d;
+      font-size: 14px;
+      font-style: italic;
     }
     
     .task-description {
       margin: 0;
       color: #34495e;
+      font-size: 16px;
       line-height: 1.5;
     }
     
-    #data-container {
-      padding: 10px;
+    .daily-tasks-label {
+      font-size: 18px;
+      color: #34495e;
+      margin-bottom: 15px;
+      font-weight: 500;
+      text-align: center;
     }
     
     .no-tasks {
@@ -80,7 +95,7 @@
   </style>
 </head>
 <body>
-  <h1>My Supabase Data</h1>
+  <h1>Your Daily Tasks</h1>
   <div id="data-container"></div>
   
   <script>
@@ -104,41 +119,69 @@
       }
     }
     
+    // Format date nicely if it exists
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      
+      try {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { 
+          weekday: 'short', 
+          month: 'short', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch (e) {
+        return dateStr;
+      }
+    }
+    
     // Display data
     async function displayData() {
-  const data = await fetchData();
-  const sortedData = data.sort((a, b) => {
-    return new Date(b.date_column) - new Date(a.date_column);
-  });
+      const data = await fetchData();
+      const sortedData = data.sort((a, b) => {
+        return new Date(b.date_column) - new Date(a.date_column);
+      });
 
-  const container = document.getElementById('data-container');
-  
-  container.innerHTML = sortedData.map(item => `
-    <div class="task-card" style="margin-bottom: 15px; padding: 15px; border: 1px solid #eee; border-radius: 5px;">
-      <div style="display: flex; justify-content: space-between;">
-        <div style="flex: 1;">
-          <h4 style="margin: 0 0 5px 0;">Task 1</h4>
-          <p style="margin: 0;">${item.task1 || '--'}</p>
-          <p style="margin: 0;">${item.date1 || '--'}</p>
+      const container = document.getElementById('data-container');
+      
+      if (sortedData.length === 0) {
+        container.innerHTML = '<div class="no-tasks">No tasks available</div>';
+        return;
+      }
+      
+      container.innerHTML = sortedData.map(item => `
+        <div class="task-card">
+          <p class="daily-tasks-label">Important tasks for ${formatDate(item.date_column || new Date())}</p>
+          
+          <div class="task-item">
+            <div class="task-header">
+              <h3 class="task-title">Task 1</h3>
+              <span class="task-date">${formatDate(item.date1)}</span>
+            </div>
+            <p class="task-description">${item.task1 || 'No task specified'}</p>
+          </div>
+          
+          <div class="task-item">
+            <div class="task-header">
+              <h3 class="task-title">Task 2</h3>
+              <span class="task-date">${formatDate(item.date2)}</span>
+            </div>
+            <p class="task-description">${item.task2 || 'No task specified'}</p>
+          </div>
+          
+          <div class="task-item">
+            <div class="task-header">
+              <h3 class="task-title">Task 3</h3>
+              <span class="task-date">${formatDate(item.date3)}</span>
+            </div>
+            <p class="task-description">${item.task3 || 'No task specified'}</p>
+          </div>
         </div>
-        <div style="flex: 1;">
-          <h4 style="margin: 0 0 5px 0;">Task 2</h4>
-          <p style="margin: 0;">${item.task2 || '--'}</p>
-          <p style="margin: 0;">${item.date2 || '--'}</p>
-        </div>
-        <div style="flex: 1;">
-          <h4 style="margin: 0 0 5px 0;">Task 3</h4>
-          <p style="margin: 0;">${item.task3 || '--'}</p>
-          <p style="margin: 0;">${item.date3 || '--'}</p>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  if (data.length === 0) {
-    container.innerHTML = '<p>No tasks available</p>';
-  }
-}
+      `).join('');
+    }
+    
     // Load data when page loads
     document.addEventListener('DOMContentLoaded', displayData);
   </script>
