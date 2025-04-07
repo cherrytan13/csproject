@@ -7,19 +7,79 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="final.js" defer></script>
   <style>
-    body {
-      font-family:Verdana, Geneva, Tahoma, sans-serif;
-      background: linear-gradient(135deg, skyblue, violet);
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
 
-      
+    body {
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, skyblue, violet);
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 250px;
+      background-color: #1e2b49;
+      color: white;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: fixed;
+      z-index: 100;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex: 1;
+    }
+
+    .sidebar li {
+      padding: 12px 25px;
+      margin: 8px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .sidebar li a {
+      color: inherit;
+      text-decoration: none;
+      display: block;
+    }
+
+    .sidebar li.active {
+      background-color: #4285f4;
+    }
+
+    .sidebar li:hover:not(.active) {
+      background-color: rgba(66, 133, 244, 0.2);
+    }
+
+    .sidebar li.bottom {
+      margin-top: auto;
+      margin-bottom: 20px;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      margin-left: 250px;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      margin: 0;
-      padding: 20px;
     }
-    
+
+    /* Original Task Form Styles */
     .form-container {
       background-color: white;
       border-radius: 20px;
@@ -35,7 +95,7 @@
       color: #2a8ab6;
       text-align: center;
       margin-bottom: 30px;
-      font-family:serif
+      font-family: serif;
     }
     
     .task-group {
@@ -72,14 +132,13 @@
       padding: 10px;
       border: 2px solid #2fb9e6;
       border-radius: 10px;
-      
       margin-bottom: 10px;
       box-sizing: border-box;
       font-size: 21px;
     }
     
     input[type="date"] {
-      color:#4be8f6;
+      color: #4be8f6;
     }
     
     button {
@@ -90,7 +149,6 @@
       border-radius: 50px;
       cursor: pointer;
       font-size: 16px;
-      
       display: block;
       margin: 0 auto;
       transition: transform 0.3s, background-color 0.3s;
@@ -125,47 +183,69 @@
       bottom: 20px;
       right: 20px;
     }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 200px;
+      }
+      .main-content {
+        margin-left: 200px;
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <div class="decorations decoration-1"></div>
-    <div class="decorations decoration-2"></div>
-    <div class="decorations decoration-3"></div>
-    <div class="decorations decoration-4"></div>
-    
-    <h1>My Top 3 Tasks Today</h1>
-    
-    <form id="taskForm">
-      <div class="task-group">
-        <span class="task-number">1</span>
-        <label for="task1">Task:</label>
-        <input type="text" id="task1" name="task1" placeholder="What's your first priority?" required>
-        
-        <label for="date1">Complete by:</label>
-        <input type="date" id="date1" name="date1" required>
-      </div>
+  <aside class="sidebar">
+    <ul>
+      <li>Home</li>
+      <li><a href="template.html">Main Tasks</a></li>
+      <li class="active"><a href="indexmain.html">Tasks</a></li>
+      <li><a href="calendar.html">Calendar</a></li>
+      <li class="bottom"><a href="settings.html">Settings</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-content">
+    <div class="form-container">
+      <div class="decorations decoration-1"></div>
+      <div class="decorations decoration-2"></div>
+      <div class="decorations decoration-3"></div>
+      <div class="decorations decoration-4"></div>
       
-      <div class="task-group">
-        <span class="task-number">2</span>
-        <label for="task2">Task:</label>
-        <input type="text" id="task2" name="task2" placeholder="What's next on your list?" required>
-        
-        <label for="date2">Complete by:</label>
-        <input type="date" id="date2" name="date2" required>
-      </div>
+      <h1>My Top 3 Tasks Today</h1>
       
-      <div class="task-group">
-        <span class="task-number">3</span>
-        <label for="task3">Task:</label>
-        <input type="text" id="task3" name="task3" placeholder="What else is important today?" required>
+      <form id="taskForm">
+        <div class="task-group">
+          <span class="task-number">1</span>
+          <label for="task1">Task:</label>
+          <input type="text" id="task1" name="task1" placeholder="What's your first priority?" required>
+          
+          <label for="date1">Complete by:</label>
+          <input type="date" id="date1" name="date1" required>
+        </div>
         
-        <label for="date3">Complete by:</label>
-        <input type="date" id="date3" name="date3" required>
-      </div>
-      
-      <button type="submit">Save My Tasks </button>
-    </form>
+        <div class="task-group">
+          <span class="task-number">2</span>
+          <label for="task2">Task:</label>
+          <input type="text" id="task2" name="task2" placeholder="What's next on your list?" required>
+          
+          <label for="date2">Complete by:</label>
+          <input type="date" id="date2" name="date2" required>
+        </div>
+        
+        <div class="task-group">
+          <span class="task-number">3</span>
+          <label for="task3">Task:</label>
+          <input type="text" id="task3" name="task3" placeholder="What else is important today?" required>
+          
+          <label for="date3">Complete by:</label>
+          <input type="date" id="date3" name="date3" required>
+        </div>
+        
+        <button type="submit">Save My Tasks</button>
+      </form>
+    </div>
   </div>
 
   <script>
