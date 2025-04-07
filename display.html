@@ -4,6 +4,7 @@
   <title>Supabase Data Display</title>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
+    /* [Same styling as before — unchanged] */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #1e2b49;
@@ -13,7 +14,7 @@
       padding: 20px;
       line-height: 1.6;
     }
-    
+
     h1 {
       color: white;
       text-align: center;
@@ -22,7 +23,50 @@
       border-bottom: 2px solid #add8e6;
       font-size: 32px;
     }
-    
+
+    .controls {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .sort-button {
+      background-color: #008080;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .sort-button:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .sort-button svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s;
+    }
+
+    .sort-button.desc svg {
+      transform: rotate(180deg);
+    }
+
+    .sort-indicator {
+      margin-left: 5px;
+      font-size: 12px;
+    }
+
     .task-card {
       background-color: white;
       border-radius: 12px;
@@ -31,12 +75,12 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s, box-shadow 0.3s;
     }
-    
+
     .task-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     }
-    
+
     .task-item {
       margin-bottom: 20px;
       padding: 18px;
@@ -44,38 +88,38 @@
       border-left: 4px solid #3498db;
       border-radius: 6px;
     }
-    
+
     .task-item:last-child {
       margin-bottom: 0;
     }
-    
+
     .task-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
     }
-    
+
     .task-title {
       color: #2980b9;
       margin: 0;
       font-size: 20px;
       font-weight: 600;
     }
-    
+
     .task-date {
       color: #7f8c8d;
       font-size: 14px;
       font-style: italic;
     }
-    
+
     .task-description {
       margin: 0;
       color: #34495e;
       font-size: 16px;
       line-height: 1.5;
     }
-    
+
     .daily-tasks-label {
       font-size: 18px;
       color: #34495e;
@@ -83,7 +127,7 @@
       font-weight: 500;
       text-align: center;
     }
-    
+
     .no-tasks {
       text-align: center;
       padding: 30px;
@@ -95,22 +139,31 @@
   </style>
 </head>
 <body>
-  <h1>Your Daily Tasks</h1>
+  <h1>Main Tasks of the day!</h1>
+
+  <div class="controls">
+    <button id="sort-button" class="sort-button">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <polyline points="19 12 12 19 5 12"></polyline>
+      </svg>
+      Sort by Task Date
+      <span id="sort-order" class="sort-indicator">(Newest First)</span>
+    </button>
+  </div>
+
   <div id="data-container"></div>
-  
+
   <script>
-    // Initialize Supabase
     const supabaseUrl = 'https://gyywkzwxfuizlhbglady.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5eXdrend4ZnVpemxoYmdsYWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM5NTc2MjgsImV4cCI6MjA1OTUzMzYyOH0.rYuRP2ExtQ93IW1kL0gS0-XasMnNFaUxoBKo_V46rU4';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5eXdrend4ZnVpemxoYmdsYWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM5NTc2MjgsImV4cCI6MjA1OTUzMzYyOH0.rYuRP2ExtQ93IW1kL0gS0-XasMnNFaUxoBKo_V46rU4'; // Truncated for security
     const client = supabase.createClient(supabaseUrl, supabaseKey);
-    
-    // Fetch data
+
+    let sortOrder = 'desc';
+
     async function fetchData() {
       try {
-        let { data, error } = await client
-          .from('tasks')
-          .select('*');
-        
+        let { data, error } = await client.from('tasks').select('*');
         if (error) throw error;
         return data;
       } catch (error) {
@@ -118,72 +171,92 @@
         return [];
       }
     }
-    
-    // Format date nicely if it exists
+
     function formatDate(dateStr) {
       if (!dateStr) return '';
-      
       try {
         const date = new Date(dateStr);
-        return date.toLocaleDateString('en-US', { 
-          weekday: 'short', 
-          month: 'short', 
+        return date.toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
           day: 'numeric',
           hour: '2-digit',
           minute: '2-digit'
         });
-      } catch (e) {
+      } catch {
         return dateStr;
       }
     }
-    
-    // Display data
-    async function displayData() {
-      const data = await fetchData();
-      const sortedData = data.sort((a, b) => {
-        return new Date(b.date_column) - new Date(a.date_column);
-      });
 
+    function displayDataTaskSorted(tasks) {
       const container = document.getElementById('data-container');
-      
-      if (sortedData.length === 0) {
+      if (tasks.length === 0) {
         container.innerHTML = '<div class="no-tasks">No tasks available</div>';
         return;
       }
-      
-      container.innerHTML = sortedData.map(item => `
-        <div class="task-card">
-          <p class="daily-tasks-label">Important tasks for ${formatDate(item.date_column || new Date())}</p>
-          
+
+      container.innerHTML = tasks.map(row => {
+        const taskArray = [
+          { title: 'Task 1', description: row.task1, date: row.date1 },
+          { title: 'Task 2', description: row.task2, date: row.date2 },
+          { title: 'Task 3', description: row.task3, date: row.date3 }
+        ];
+
+        const sortedTasks = taskArray
+          .filter(t => t.description || t.date)
+          .sort((a, b) => {
+            const aDate = new Date(a.date || 0);
+            const bDate = new Date(b.date || 0);
+            return sortOrder === 'desc' ? bDate - aDate : aDate - bDate;
+          });
+
+        const taskHtml = sortedTasks.map(task => `
           <div class="task-item">
             <div class="task-header">
-              <h3 class="task-title">Task 1</h3>
-              <span class="task-date">${formatDate(item.date1)}</span>
+              <h3 class="task-title">${task.title}</h3>
+              <span class="task-date">${formatDate(task.date)}</span>
             </div>
-            <p class="task-description">${item.task1 || 'No task specified'}</p>
+            <p class="task-description">${task.description || 'No task specified'}</p>
           </div>
-          
-          <div class="task-item">
-            <div class="task-header">
-              <h3 class="task-title">Task 2</h3>
-              <span class="task-date">${formatDate(item.date2)}</span>
-            </div>
-            <p class="task-description">${item.task2 || 'No task specified'}</p>
+        `).join('');
+
+        return `
+          <div class="task-card">
+            <p class="daily-tasks-label">Important tasks</p>
+            ${taskHtml}
           </div>
-          
-          <div class="task-item">
-            <div class="task-header">
-              <h3 class="task-title">Task 3</h3>
-              <span class="task-date">${formatDate(item.date3)}</span>
-            </div>
-            <p class="task-description">${item.task3 || 'No task specified'}</p>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
-    
-    // Load data when page loads
-    document.addEventListener('DOMContentLoaded', displayData);
+
+    function setupSortButton() {
+      const sortButton = document.getElementById('sort-button');
+      const sortOrderText = document.getElementById('sort-order');
+
+      sortButton.addEventListener('click', () => {
+        sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
+
+        if (sortOrder === 'desc') {
+          sortOrderText.textContent = '(Newest First)';
+          sortButton.classList.add('desc');
+        } else {
+          sortOrderText.textContent = '(Oldest First)';
+          sortButton.classList.remove('desc');
+        }
+
+        displayData();
+      });
+    }
+
+    async function displayData() {
+      const data = await fetchData();
+      displayDataTaskSorted(data);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      displayData();
+      setupSortButton();
+    });
   </script>
 </body>
 </html>
