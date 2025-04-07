@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cute Daily Tasks</title>
+  <title>Daily Tasks</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="final.js" defer></script>
   <style>
@@ -11,20 +11,31 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
       display: flex;
       min-height: 100vh;
       margin: 0;
-      background: linear-gradient(135deg, skyblue, violet);
+      background: linear-gradient(135deg, #1f26875e, #193b79, #318dc7);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      25% { background-position: 50% 100%; }
+      50% { background-position: 100% 50%; }
+      75% { background-position: 50% 0%; }
+      100% { background-position: 0% 50%; }
     }
 
     /* Sidebar Styles */
     .sidebar {
       width: 250px;
-      background-color: #1e2b49;
+      background-color: rgba(46, 49, 99, 0.8);
+      backdrop-filter: blur(10px);
       color: white;
       padding: 20px 0;
       display: flex;
@@ -32,6 +43,8 @@
       height: 100vh;
       position: fixed;
       z-index: 100;
+      box-shadow: 3px 0 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
     }
 
     .sidebar ul {
@@ -43,10 +56,29 @@
 
     .sidebar li {
       padding: 12px 25px;
-      margin: 8px 0;
+      margin: 8px 15px;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar li:after {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.6s;
+    }
+
+    .sidebar li:hover:after {
+      left: 100%;
     }
 
     .sidebar li a {
@@ -56,11 +88,13 @@
     }
 
     .sidebar li.active {
-      background-color: #4285f4;
+      background-color: rgba(138, 85, 255, 0.7);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar li:hover:not(.active) {
-      background-color: rgba(66, 133, 244, 0.2);
+      background-color: rgba(138, 85, 255, 0.2);
+      transform: translateX(5px);
     }
 
     .sidebar li.bottom {
@@ -79,109 +113,197 @@
       min-height: 100vh;
     }
 
-    /* Original Task Form Styles */
+    /* Task Form Styles */
     .form-container {
-      background-color: white;
+      background-color: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
       border-radius: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      padding: 30px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      padding: 35px;
       width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       position: relative;
-      box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4); 
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translateY(20px);
+      opacity: 0;
+      animation: floatUp 0.8s ease forwards;
+    }
+    
+    @keyframes floatUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     
     h1 {
-      color: #2a8ab6;
+      color: #6c5ce7;
       text-align: center;
       margin-bottom: 30px;
-      font-family: serif;
+      font-weight: 600;
+      font-size: 30px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    h1:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+      border-radius: 3px;
     }
     
     .task-group {
       margin-bottom: 25px;
-      background-color: #fff8fb;
-      padding: 20px;
-      border-radius: 15px;
-      border: 2px dashed #35cce7;
-      font-size: 23px;
-      color: blueviolet;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(156, 136, 255, 0.3);
+      font-size: 18px;
+      color: #4a5568;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    
+    .task-group:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, #6c5ce7, #a29bfe);
+      border-top-left-radius: 16px;
+      border-bottom-left-radius: 16px;
+    }
+    
+    .task-group:hover {
+      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.2);
+      transform: translateY(-3px) scale(1.01);
+      border: 1px solid rgba(156, 136, 255, 0.5);
+      background-color: rgba(255, 255, 255, 0.95);
     }
     
     .task-number {
       display: inline-block;
-      background-color: #89CFF0;
+      background: linear-gradient(135deg, #6c5ce7, #a29bfe);
       color: white;
-      width: 30px;
-      height: 30px;
-      line-height: 30px;
+      width: 36px;
+      height: 36px;
+      line-height: 36px;
       text-align: center;
       border-radius: 50%;
-      margin-right: 10px;
+      margin-right: 12px;
+      font-weight: bold;
+      box-shadow: 0 3px 6px rgba(108, 92, 231, 0.3);
+      font-size: 16px;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+    
+    .task-group:hover .task-number {
+      transform: rotate(360deg);
+      box-shadow: 0 5px 12px rgba(108, 92, 231, 0.5);
     }
     
     label {
       display: block;
       margin-bottom: 8px;
-      color: #89CFF0;
-      font-weight: bold;
+      color: #5a67d8;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      transition: all 0.2s ease;
+    }
+    
+    .task-group:hover label {
+      color: #4c3fd8;
+      transform: translateX(3px);
     }
     
     input[type="text"], input[type="date"] {
       width: 100%;
-      padding: 10px;
-      border: 2px solid #2fb9e6;
+      padding: 14px;
+      border: 1px solid #d4d6fb;
       border-radius: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       box-sizing: border-box;
-      font-size: 21px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+    
+    input[type="text"]:focus, input[type="date"]:focus {
+      border-color: #6c5ce7;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+      background-color: rgba(255, 255, 255, 0.95);
+      transform: translateY(-2px);
     }
     
     input[type="date"] {
-      color: #4be8f6;
+      color: #6c5ce7;
+    }
+    
+    input[type="text"]::placeholder {
+      color: #a0aec0;
     }
     
     button {
-      background-color: #89CFF0;
-      color: #704bf6;
+      background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+      color: white;
       border: none;
-      padding: 12px 25px;
+      padding: 16px 36px;
       border-radius: 50px;
       cursor: pointer;
       font-size: 16px;
+      font-weight: 600;
       display: block;
-      margin: 0 auto;
-      transition: transform 0.3s, background-color 0.3s;
+      margin: 25px auto 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    button:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: all 0.6s;
+      z-index: -1;
+    }
+    
+    button:hover:before {
+      left: 100%;
     }
     
     button:hover {
-      background-color: #c0fffd;
-      transform: scale(1.05);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
     }
     
-    .decorations {
-      position: absolute;
-      font-size: 24px;
-    }
-    
-    .decoration-1 {
-      top: 20px;
-      left: 20px;
-    }
-    
-    .decoration-2 {
-      top: 20px;
-      right: 20px;
-    }
-    
-    .decoration-3 {
-      bottom: 20px;
-      left: 20px;
-    }
-    
-    .decoration-4 {
-      bottom: 20px;
-      right: 20px;
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 10px rgba(108, 92, 231, 0.4);
     }
 
     @media (max-width: 768px) {
@@ -192,7 +314,45 @@
         margin-left: 200px;
         padding: 20px;
       }
+      .form-container {
+        padding: 25px;
+      }
     }
+
+    /* Additional responsive styles */
+    @media (max-width: 600px) {
+      .sidebar {
+        width: 70px;
+      }
+      .sidebar li {
+        padding: 12px 0;
+        margin: 8px auto;
+        text-align: center;
+      }
+      .sidebar li a span {
+        display: none;
+      }
+      .main-content {
+        margin-left: 70px;
+        padding: 15px;
+      }
+    }
+
+    /* New Animation for task groups */
+    @keyframes slideInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(50px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    .task-group:nth-child(1) { animation: slideInUp 0.5s ease-out 0.4s forwards; }
+    .task-group:nth-child(2) { animation: slideInUp 0.5s ease-out 0.6s forwards; }
+    .task-group:nth-child(3) { animation: slideInUp 0.5s ease-out 0.8s forwards; }
   </style>
 </head>
 <body>
@@ -208,11 +368,6 @@
 
   <div class="main-content">
     <div class="form-container">
-      <div class="decorations decoration-1"></div>
-      <div class="decorations decoration-2"></div>
-      <div class="decorations decoration-3"></div>
-      <div class="decorations decoration-4"></div>
-      
       <h1>My Top 3 Tasks Today</h1>
       
       <form id="taskForm">
