@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const deleteSpan = document.createElement('span');
         deleteSpan.className = 'delete-task';
-        deleteSpan.textContent = '✕';
+        deleteSpan.textContent = 'Delete';
         deleteSpan.addEventListener('click', function(e) {
             e.stopPropagation();
             taskItem.remove();
