@@ -80,7 +80,7 @@
       animation: gradientAnimation 15s ease infinite;
       height: 100vh;
       display: flex;
-      justify-content:space-evenly;
+      justify-content: space-evenly;
       align-items: center;
       overflow: hidden;
       position: relative;
@@ -401,21 +401,19 @@
       transform: translateX(5px);
     }
 
-
     .typewriter-container {
       background-color: transparent;
       text-align: center;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       text-align: center;
-      width: 500px;
-      padding: 40px;
-      
+      width: 700px;
+      padding: 20px;
     }
 
     .typewriter {
       font-weight: bold;
-      font-size: 80px;
+      font-size: 30px;
       color: white;
       overflow: hidden;
       border-right: 3px solid #333;
@@ -427,7 +425,6 @@
         typing 2s steps(40, end),
         erasing 1.5s steps(40, end) 3s forwards,
         blink-caret 0.75s step-end infinite;
-   
     }
 
     @keyframes typing {
@@ -451,14 +448,14 @@
     }
 
     .content-container {
-      min-height: 30px;
+      min-height: 20px;
       display: flex;
       justify-content: center;
     }
 
     .second-line {
       display: none;
-      font-size: 40px;
+      font-size: 30px;
       color: white;
       overflow: hidden;
       border-right: 3px solid #333;
@@ -469,25 +466,15 @@
         typing-second 2.5s steps(40, end),
         blink-caret 0.75s step-end infinite;
     }
-
-    /* Show second line after first is erased */
-    @keyframes showSecond {
-      from { display: none; }
-      to { display: inline-block; }
-    }
   </style>
 </head>
 <body>
   <div class="typewriter-container">
     <div class="content-container">
-      <div class="typewriter">dating?
-        </div>
+      <div class="typewriter">bored with your daily routine?</div>
     </div>
   </div>
 
-  </style>
-</head>
-<body>
   <div class="container">
     <div class="floating-shapes">
       <div class="shape shape1"></div>
@@ -498,12 +485,12 @@
     
     <div class="header">
       <h1 class="site-title">CloudSync</h1>
-      <p class="site-description">Seamless digital experiences</p>
+      <p class="site-description">Your secure cloud storage solution</p>
     </div>
     
     <div class="tabs">
-      <div class="tab active" id="login-tab" onclick="switchTab('login')">Login</div>
-      <div class="tab" id="signup-tab" onclick="switchTab('signup')">Sign Up</div>
+      <div class="tab active" id="login-tab">Login</div>
+      <div class="tab" id="signup-tab">Sign Up</div>
     </div>
     
     <div class="tab-content">
@@ -516,7 +503,7 @@
           <label for="login-password">Password</label>
           <input type="password" id="login-password" placeholder="Enter your password" required>
         </div>
-        <button type="submit" class="submit-btn"><a href="biopage.html">Login</button>
+        <button type="submit" class="submit-btn">Login</button>
         <div class="extra-links">
           <a href="#">Forgot password?</a>
         </div>
@@ -546,128 +533,115 @@
       </form>
     </div>
   </div>
-  <script>
-    // Wait for the first text to be typed and erased
+
+  <script type="module">
+    // Import the required Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword 
+    } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCeAeytUY3ybqhUmjws9TaHpzVb-y_GnB4",
+      authDomain: "csproject-47da3.firebaseapp.com",
+      projectId: "csproject-47da3",
+      storageBucket: "csproject-47da3.appspot.com",
+      messagingSenderId: "511157963008",
+      appId: "1:511157963008:web:2bd3df971fa6df1a81cbe5"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // DOM Elements
+    const loginTab = document.getElementById('login-tab');
+    const signupTab = document.getElementById('signup-tab');
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+
+    // Tab switching functionality
+    loginTab.addEventListener('click', () => switchTab('login'));
+    signupTab.addEventListener('click', () => switchTab('signup'));
+
+    function switchTab(tabName) {
+      if (tabName === 'login') {
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+      } else {
+        loginForm.classList.add('hidden');
+        signupForm.classList.remove('hidden');
+        loginTab.classList.remove('active');
+        signupTab.classList.add('active');
+      }
+    }
+
+    // Signup form submission
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      if (password !== confirmPassword) {
+        alert("Passwords don't match!");
+        return;
+      }
+      
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Account created successfully!");
+          switchTab('login'); // Switch to login tab after successful signup
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    });
+
+    // Login form submission
+    // Login form submission
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Store user info
+      localStorage.setItem('userLoggedIn', 'true');
+      localStorage.setItem('userEmail', email);
+      
+      // Redirect to homepage
+      window.location.href = 'HomePage.html'; // or your homepage file
+    })
+    .catch((error) => {
+      console.error("Login error:", error);
+      alert(error.message); // Show user-friendly error
+    });
+});
+    // Typewriter effect
     setTimeout(() => {
       const container = document.querySelector('.content-container');
       container.innerHTML = '';
       
       const secondLine = document.createElement('div');
       secondLine.className = 'second-line';
-      secondLine.textContent = 'But for dreams';
+      secondLine.textContent = 'Optimize your work with us.';
       secondLine.style.display = 'inline-block';
       
       container.appendChild(secondLine);
-    }, 4500); // Wait for typing + erasing animations to complete
+    }, 4500);
+
+    // Inside the login form submission .then() callback:
+
+
   </script>
-  <!--<script>
-    function switchTab(tab) {
-      const loginTab = document.getElementById('login-tab');
-      const signupTab = document.getElementById('signup-tab');
-      const loginForm = document.getElementById('login-form');
-      const signupForm = document.getElementById('signup-form');
-      
-      if (tab === 'login') {
-        loginTab.classList.add('active');
-        signupTab.classList.remove('active');
-        loginForm.classList.remove('hidden');
-        signupForm.classList.add('hidden');
-      } else {
-        loginTab.classList.remove('active');
-        signupTab.classList.add('active');
-        loginForm.classList.add('hidden');
-        signupForm.classList.remove('hidden');
-      }
-      
-      // Reset animations for the newly visible form
-      const visibleForm = tab === 'login' ? loginForm : signupForm;
-      const formGroups = visibleForm.querySelectorAll('.form-group');
-      const submitBtn = visibleForm.querySelector('.submit-btn');
-      const extraLinks = visibleForm.querySelector('.extra-links');
-      
-      formGroups.forEach((group, index) => {
-        group.style.animation = 'none';
-        group.offsetHeight; // Trigger reflow
-        group.style.animation = `fadeIn 0.5s ease-out forwards ${0.8 + index * 0.1}s`;
-      });
-      
-      submitBtn.style.animation = 'none';
-      submitBtn.offsetHeight;
-      submitBtn.style.animation = `fadeIn 0.5s ease-out ${0.8 + formGroups.length * 0.1}s forwards`;
-      
-      extraLinks.style.animation = 'none';
-      extraLinks.offsetHeight;
-      extraLinks.style.animation = `fadeIn 0.5s ease-out ${1 + formGroups.length * 0.1}s forwards`;
-    }
-    
-    // Create animated background particles
-    function createParticles() {
-      const body = document.querySelector('body');
-      const particleCount = 20;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        
-        // Random properties
-        const size = Math.random() * 15 + 5;
-        const posX = Math.random() * window.innerWidth;
-        const posY = Math.random() * window.innerHeight;
-        const opacity = Math.random() * 0.2 + 0.1;
-        const duration = Math.random() * 20 + 10;
-        const delay = Math.random() * 5;
-        
-        // Apply styles
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${posX}px`;
-        particle.style.top = `${posY}px`;
-        particle.style.opacity = opacity;
-        particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
-        
-        body.appendChild(particle);
-      }
-    }
-    
-    // Prevent form submission (for demo purposes)
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      animateButtonClick(e.target.querySelector('.submit-btn'));
-      setTimeout(() => {
-        alert('Login functionality would go here in a real application');
-      }, 300);
-    });
-    
-    document.getElementById('signup-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      animateButtonClick(e.target.querySelector('.submit-btn'));
-      setTimeout(() => {
-        alert('Signup functionality would go here in a real application');
-      }, 300);
-    });
-    
-    function animateButtonClick(button) {
-      button.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        button.style.transform = '';
-      }, 200);
-    }
-    
-    // Add input focus animations
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-      input.addEventListener('focus', function() {
-        this.parentElement.classList.add('focus');
-      });
-      
-      input.addEventListener('blur', function() {
-        this.parentElement.classList.remove('focus');
-      });
-    });
-    
-    // Initialize particles
-    window.addEventListener('load', createParticles);
-  </script>
-  !-->
 </body>
 </html>
