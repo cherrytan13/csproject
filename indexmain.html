@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Tasks</title>
+    
+    
     <style>
         * {
             margin: 0;
@@ -32,7 +34,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 50px;
             flex-shrink: 0;
         }
 
@@ -57,6 +59,7 @@
         }
 
         .add-task {
+            
             margin-bottom: 20px;
             flex-shrink: 0;
         }
@@ -242,7 +245,7 @@
 .check-task {
     margin-right: 10px;
     cursor: pointer;
-    color: #ccc;
+    color: green;
     font-size: 18px;
 }
 
@@ -320,7 +323,13 @@
 .task-input.error {
     border-color: #ff4444 !important;
 }
+
+.p{
+    margin-top: 20px;
+}
+    
     </style>
+    
 </head>
 <body>
     <div class="container">
@@ -339,6 +348,9 @@
             <input type="text" id="userinput" placeholder="Enter the main task of the day!">
             <button onclick="addTasktop()">Add task</button>
             <button onclick="addTasktop()">+</button>
+          
+
+            <p>Main task for the day is</p>
             <p id="displaytask"></p>
             
             
@@ -423,9 +435,11 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js"></script>
+    
+
+    
     <script src="script3.js"></script>
+    
     
     
     
