@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cute Daily Tasks</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="final.js" defer></script>
+  <style>
+    body {
+      font-family:Verdana, Geneva, Tahoma, sans-serif;
+      background: linear-gradient(135deg, skyblue, violet);
+
+      
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .form-container {
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4); 
+    }
+    
+    h1 {
+      color: #2a8ab6;
+      text-align: center;
+      margin-bottom: 30px;
+      font-family:serif
+    }
+    
+    .task-group {
+      margin-bottom: 25px;
+      background-color: #fff8fb;
+      padding: 20px;
+      border-radius: 15px;
+      border: 2px dashed #35cce7;
+      font-size: 23px;
+      color: blueviolet;
+    }
+    
+    .task-number {
+      display: inline-block;
+      background-color: #89CFF0;
+      color: white;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #89CFF0;
+      font-weight: bold;
+    }
+    
+    input[type="text"], input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #2fb9e6;
+      border-radius: 10px;
+      
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      font-size: 21px;
+    }
+    
+    input[type="date"] {
+      color:#4be8f6;
+    }
+    
+    button {
+      background-color: #89CFF0;
+      color: #704bf6;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 16px;
+      
+      display: block;
+      margin: 0 auto;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #c0fffd;
+      transform: scale(1.05);
+    }
+    
+    .decorations {
+      position: absolute;
+      font-size: 24px;
+    }
+    
+    .decoration-1 {
+      top: 20px;
+      left: 20px;
+    }
+    
+    .decoration-2 {
+      top: 20px;
+      right: 20px;
+    }
+    
+    .decoration-3 {
+      bottom: 20px;
+      left: 20px;
+    }
+    
+    .decoration-4 {
+      bottom: 20px;
+      right: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div class="decorations decoration-1"></div>
+    <div class="decorations decoration-2"></div>
+    <div class="decorations decoration-3"></div>
+    <div class="decorations decoration-4"></div>
+    
+    <h1>My Top 3 Tasks Today</h1>
+    
+    <form id="taskForm">
+      <div class="task-group">
+        <span class="task-number">1</span>
+        <label for="task1">Task:</label>
+        <input type="text" id="task1" name="task1" placeholder="What's your first priority?" required>
+        
+        <label for="date1">Complete by:</label>
+        <input type="date" id="date1" name="date1" required>
+      </div>
+      
+      <div class="task-group">
+        <span class="task-number">2</span>
+        <label for="task2">Task:</label>
+        <input type="text" id="task2" name="task2" placeholder="What's next on your list?" required>
+        
+        <label for="date2">Complete by:</label>
+        <input type="date" id="date2" name="date2" required>
+      </div>
+      
+      <div class="task-group">
+        <span class="task-number">3</span>
+        <label for="task3">Task:</label>
+        <input type="text" id="task3" name="task3" placeholder="What else is important today?" required>
+        
+        <label for="date3">Complete by:</label>
+        <input type="date" id="date3" name="date3" required>
+      </div>
+      
+      <button type="submit">Save My Tasks </button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('taskForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const tasks = [
+        {
+          task: document.getElementById('task1').value,
+          date: document.getElementById('date1').value
+        },
+        {
+          task: document.getElementById('task2').value,
+          date: document.getElementById('date2').value
+        },
+        {
+          task: document.getElementById('task3').value,
+          date: document.getElementById('date3').value
+        }
+      ];
+      
+      alert('Tasks saved successfully! \n\n' + 
+        '1. ' + tasks[0].task + ' (by ' + tasks[0].date + ')\n' + 
+        '2. ' + tasks[1].task + ' (by ' + tasks[1].date + ')\n' + 
+        '3. ' + tasks[2].task + ' (by ' + tasks[2].date + ')');
+    });
+  </script>
+</body>
+</html>
