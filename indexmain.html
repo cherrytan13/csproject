@@ -16,71 +16,142 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
-            background-color: white;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            width: 250px;
-            background-color: #1e2b49;
-            color: white;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            flex-shrink: 0;
-        }
-
-        .sidebar::before {
-            content: "";
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: rgba(47, 85, 151, 0.3);
-            z-index: 0;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
             margin: 0;
-            flex: 1;
-            position: relative;
-            z-index: 1;
-        }
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e2b49;
+            
+}
+        
 
-        .sidebar li {
-            padding: 12px 25px;
-            margin: 8px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-
-        .sidebar li a {
-            color: inherit;
-            text-decoration: none;
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-
-        .sidebar li.active {
-            background-color: #4285f4;
-        }
-
-        .sidebar li:hover:not(.active) {
-            background-color: rgba(66, 133, 244, 0.2);
-        }
-
-        .sidebar li.bottom {
-            margin-top: auto;
-            margin-bottom: 20px;
-        }
+        .sidebar {
+      width: 400px;
+      background-color: rgba(30, 43, 73, 0.8);
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: rgba(107, 70, 193, 0.2);
+      z-index: 0;
+      animation: pulseSidebar 5s infinite alternate ease-in-out;
+    }
+    
+    @keyframes pulseSidebar {
+      0% {
+        transform: scale(1);
+        background-color: rgba(107, 70, 193, 0.2);
+      }
+      100% {
+        transform: scale(1.2);
+        background-color: rgba(138, 43, 226, 0.2);
+      }
+    }
+    
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .sidebar li {
+      padding: 12px 16px;
+      margin: 10px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    
+    .sidebar li.active {
+      background-color: rgba(66, 133, 244, 0.7);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+    }
+    
+    /* Bubbles in Home column */
+    .sidebar li.active::before,
+    .sidebar li.active::after {
+      content: "";
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      animation: float 8s infinite ease-in-out;
+    }
+    
+    .sidebar li.active::before {
+      width: 20px;
+      height: 20px;
+      right: 10px;
+      top: 5px;
+      animation-delay: 0s;
+    }
+    
+    .sidebar li.active::after {
+      width: 12px;
+      height: 12px;
+      right: 18px;
+      bottom: 5px;
+      animation-delay: 2s;
+    }
+    
+    /* Additional bubbles */
+    .bubble {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      z-index: 0;
+    }
+    
+    .bubble:nth-child(1) {
+      width: 15px;
+      height: 15px;
+      right: 40px;
+      top: 15px;
+      animation: float 7s infinite ease-in-out;
+    }
+    
+    .bubble:nth-child(2) {
+      width: 10px;
+      height: 10px;
+      right: 25px;
+      top: 25px;
+      animation: float 9s infinite ease-in-out;
+      animation-delay: 1s;
+    }
+    
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-15px) scale(1.1);
+      }
+    }
+    
+    .sidebar li:hover:not(.active) {
+      background-color: rgba(66, 133, 244, 0.2);
+    }
+    
+    .sidebar li.bottom {
+      margin-top: auto;
+      margin-bottom: 20px;
+    }
 
         /* Main Content Styles */
         .main-content {
@@ -89,6 +160,7 @@
             flex-direction: column;
             overflow: hidden;
             padding: 20px;
+            background-color: white
         }
 
         .header {
@@ -303,10 +375,14 @@
     </style>
 </head>
 <body>
+    <div style="position: fixed; top: 10px; right: 10px; color: white; font-family: 'Segoe UI', sans-serif; font-size: 20px; z-index: 1000;">
+        Nebula
+      </div>
     <aside class="sidebar">
         <ul>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="HomePage.html">Home</a></li>
             <li><a href="template.html">Main Tasks</a></li>
+            <li><a href="display.html">List of Tasks</a></li>
             <li class="active"><a href="indexmain.html">Tasks</a></li>
             <li><a href="calendar.html">Calendar</a></li>
             <li class="bottom"><a href="settings.html">Settings</a></li>

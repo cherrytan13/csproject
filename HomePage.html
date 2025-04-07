@@ -5,16 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>To-Do Dashboard</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #1e2b49;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #1e2b49;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
     
     /* Enhanced Animated Background Grid */
     .background-grid {
@@ -142,20 +140,17 @@
     
     .dashboard-container {
       display: flex;
-      width: 90%;
-      height: 80%;
+      width: 100%;
+      height: 100%;
       border-radius: 15px;
       box-shadow: 0 8px 32px hsla(236, 63%, 33%, 0.37);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 255, 255, 0.18);
       overflow: hidden;
       z-index: 1;
       background: rgba(30, 43, 73, 0.65);
     }
-    
     .sidebar {
-      width: 200px;
+      width: 400px;
       background-color: rgba(30, 43, 73, 0.8);
       color: white;
       padding: 20px;
@@ -315,32 +310,80 @@
       color: #b39ddb;
       font-weight: 600;
     }
+
+    /* Fix for sidebar links */
+    .sidebar li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+    }
   </style>
 </head>
 <body>
+  <div style="position: fixed; top: 10px; right: 10px; color: white; font-family: 'Segoe UI', sans-serif; font-size: 20px; z-index: 1000;">
+    Nebula
+  </div>
+  
   <!-- Enhanced animated background grid -->
   <div class="background-grid">
     <div class="grid"></div>
   </div>
   
+  <aside class="sidebar">
+    <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="template.html">Main Tasks</a></li>
+        <li><a href="display.html">List of Tasks</a></li>
+        <li class="active"><a href="indexmain.html">Tasks</a></li>
+        <li><a href="calendar.html">Calendar</a></li>
+        <li class="bottom"><a href="settings.html">Settings</a></li>
+    </ul>
+  </aside>
+  
   <div class="dashboard-container">
-    <aside class="sidebar">
-      <!-- Bubbles for active Home item -->
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <ul>
-        <li class="active">Home</li>
-        <li>Tasks</li>
-        <li>Calendar</li>
-        <li class="bottom">Settings</li>
-      </ul>
-    </aside>
     <main class="main-content">
       <div class="welcome-container">
-        <h1>Welcome User!</h1>
+        <h1 id="welcomeMessage">Welcome User!</h1>
         <p>Click on <strong>Tasks</strong> to add tasks and get started!</p>
       </div>
     </main>
   </div>
+
+  <script>
+    // Set a default username for testing (remove this in production)
+    if (!localStorage.getItem('username')) {
+      localStorage.setItem('username', 'User');
+    }
+    
+    // Function to get the username from localStorage
+    function getUsername() {
+      return localStorage.getItem('username') || 'User';
+    }
+
+    // Function to update the welcome message with the username
+    function updateWelcomeMessage() {
+      const username = getUsername();
+      const welcomeElement = document.getElementById('welcomeMessage');
+      if (welcomeElement) {
+        welcomeElement.textContent = `Welcome ${username}!`;
+        console.log('Welcome message updated to:', `Welcome ${username}!`);
+      } else {
+        console.error('Welcome message element not found!');
+      }
+    }
+
+    // Call the function when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM fully loaded');
+      updateWelcomeMessage();
+    });
+
+    // Example function to simulate login - you would call this after successful login
+    function simulateLogin(username) {
+      localStorage.setItem('username', username);
+      updateWelcomeMessage();
+      console.log('Login simulated for:', username);
+    }
+  </script>
 </body>
 </html>
